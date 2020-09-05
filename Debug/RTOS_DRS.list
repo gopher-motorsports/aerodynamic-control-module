@@ -21,29 +21,29 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, ALLOC, LOAD, DATA
   8 .data         0000000c  20000000  080073f4  00020000  2**2
                   CONTENTS, ALLOC, LOAD, DATA
-  9 .bss          00001b04  2000000c  08007400  0002000c  2**2
+  9 .bss          00001b00  2000000c  08007400  0002000c  2**2
                   ALLOC
- 10 ._user_heap_stack 00000600  20001b10  08007400  00021b10  2**0
+ 10 ._user_heap_stack 00000604  20001b0c  08007400  00021b0c  2**0
                   ALLOC
  11 .ARM.attributes 00000028  00000000  00000000  0002000c  2**0
                   CONTENTS, READONLY
- 12 .debug_info   00015cfb  00000000  00000000  00020034  2**0
+ 12 .debug_info   00015cea  00000000  00000000  00020034  2**0
                   CONTENTS, READONLY, DEBUGGING
- 13 .debug_abbrev 00002dfb  00000000  00000000  00035d2f  2**0
+ 13 .debug_abbrev 00002dfb  00000000  00000000  00035d1e  2**0
                   CONTENTS, READONLY, DEBUGGING
- 14 .debug_aranges 00001480  00000000  00000000  00038b30  2**3
+ 14 .debug_aranges 00001480  00000000  00000000  00038b20  2**3
                   CONTENTS, READONLY, DEBUGGING
- 15 .debug_ranges 00001318  00000000  00000000  00039fb0  2**3
+ 15 .debug_ranges 00001318  00000000  00000000  00039fa0  2**3
                   CONTENTS, READONLY, DEBUGGING
- 16 .debug_macro  00002daf  00000000  00000000  0003b2c8  2**0
+ 16 .debug_macro  00002bf3  00000000  00000000  0003b2b8  2**0
                   CONTENTS, READONLY, DEBUGGING
- 17 .debug_line   0000f727  00000000  00000000  0003e077  2**0
+ 17 .debug_line   0000f727  00000000  00000000  0003deab  2**0
                   CONTENTS, READONLY, DEBUGGING
- 18 .debug_str    0008b1dc  00000000  00000000  0004d79e  2**0
+ 18 .debug_str    0008b1d6  00000000  00000000  0004d5d2  2**0
                   CONTENTS, READONLY, DEBUGGING
- 19 .comment      0000007b  00000000  00000000  000d897a  2**0
+ 19 .comment      0000007b  00000000  00000000  000d87a8  2**0
                   CONTENTS, READONLY
- 20 .debug_frame  00004bd0  00000000  00000000  000d89f8  2**2
+ 20 .debug_frame  00004bd0  00000000  00000000  000d8824  2**2
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -2730,16 +2730,16 @@ int main(void)
  800155e:	46c0      	nop			; (mov r8, r8)
  8001560:	0800731c 	.word	0x0800731c
  8001564:	080019cd 	.word	0x080019cd
- 8001568:	20001974 	.word	0x20001974
+ 8001568:	20001970 	.word	0x20001970
  800156c:	08007340 	.word	0x08007340
  8001570:	08001a0d 	.word	0x08001a0d
- 8001574:	20001a48 	.word	0x20001a48
+ 8001574:	20001a44 	.word	0x20001a44
  8001578:	08007364 	.word	0x08007364
  800157c:	08001a95 	.word	0x08001a95
- 8001580:	2000197c 	.word	0x2000197c
+ 8001580:	20001978 	.word	0x20001978
  8001584:	08007388 	.word	0x08007388
  8001588:	08001ae5 	.word	0x08001ae5
- 800158c:	20001a00 	.word	0x20001a00
+ 800158c:	200019fc 	.word	0x200019fc
 
 08001590 <SystemClock_Config>:
 /**
@@ -3015,7 +3015,7 @@ static void MX_ADC_Init(void)
  8001706:	46bd      	mov	sp, r7
  8001708:	b004      	add	sp, #16
  800170a:	bd80      	pop	{r7, pc}
- 800170c:	20001a4c 	.word	0x20001a4c
+ 800170c:	20001a48 	.word	0x20001a48
  8001710:	40012400 	.word	0x40012400
 
 08001714 <MX_TIM3_Init>:
@@ -3149,7 +3149,7 @@ static void MX_TIM3_Init(void)
  80017c6:	b00a      	add	sp, #40	; 0x28
  80017c8:	bd80      	pop	{r7, pc}
  80017ca:	46c0      	nop			; (mov r8, r8)
- 80017cc:	20001934 	.word	0x20001934
+ 80017cc:	20001930 	.word	0x20001930
  80017d0:	40000400 	.word	0x40000400
  80017d4:	0000ea60 	.word	0x0000ea60
 
@@ -3226,7 +3226,7 @@ static void MX_USART2_UART_Init(void)
  800182a:	46c0      	nop			; (mov r8, r8)
  800182c:	46bd      	mov	sp, r7
  800182e:	bd80      	pop	{r7, pc}
- 8001830:	20001980 	.word	0x20001980
+ 8001830:	2000197c 	.word	0x2000197c
  8001834:	40004400 	.word	0x40004400
 
 08001838 <MX_DMA_Init>:
@@ -3500,7 +3500,7 @@ void startgetPots(void *argument)
   /* Infinite loop */
   for(;;)
   {
-	  HAL_ADC_Start(&hadc);	//Start the ADCs
+	  HAL_ADC_Start(&hadc);						//Start the ADCs
  80019d4:	4b0b      	ldr	r3, [pc, #44]	; (8001a04 <startgetPots+0x38>)
  80019d6:	0018      	movs	r0, r3
  80019d8:	f000 fc22 	bl	8002220 <HAL_ADC_Start>
@@ -3512,7 +3512,7 @@ void startgetPots(void *argument)
  80019e2:	0011      	movs	r1, r2
  80019e4:	0018      	movs	r0, r3
  80019e6:	f000 fc6f 	bl	80022c8 <HAL_ADC_PollForConversion>
-	  pot_1 = HAL_ADC_GetValue(&hadc);	//read the first pot
+	  pot_1 = HAL_ADC_GetValue(&hadc);			//read the first pot
  80019ea:	4b06      	ldr	r3, [pc, #24]	; (8001a04 <startgetPots+0x38>)
  80019ec:	0018      	movs	r0, r3
  80019ee:	f000 fcfd 	bl	80023ec <HAL_ADC_GetValue>
@@ -3524,11 +3524,11 @@ void startgetPots(void *argument)
 	  osDelay(25);
  80019fa:	2019      	movs	r0, #25
  80019fc:	f003 fae2 	bl	8004fc4 <osDelay>
-	  HAL_ADC_Start(&hadc);	//Start the ADCs
+	  HAL_ADC_Start(&hadc);						//Start the ADCs
  8001a00:	e7e8      	b.n	80019d4 <startgetPots+0x8>
  8001a02:	46c0      	nop			; (mov r8, r8)
- 8001a04:	20001a4c 	.word	0x20001a4c
- 8001a08:	20001978 	.word	0x20001978
+ 8001a04:	20001a48 	.word	0x20001a48
+ 8001a08:	20001974 	.word	0x20001974
 
 08001a0c <StartcalcPos>:
 * @param argument: Not used
@@ -3545,7 +3545,7 @@ void StartcalcPos(void *argument)
   /* Infinite loop */
   for(;;)
   {
-	  if(btn_state)
+	  if(btn_state)		//check if DRS button has been pushed
  8001a14:	4b17      	ldr	r3, [pc, #92]	; (8001a74 <StartcalcPos+0x68>)
  8001a16:	781b      	ldrb	r3, [r3, #0]
  8001a18:	2b00      	cmp	r3, #0
@@ -3558,7 +3558,7 @@ void StartcalcPos(void *argument)
  8001a22:	e023      	b.n	8001a6c <StartcalcPos+0x60>
 	  } else {
 
-		  /*** MAP ***/
+		  /******************************** MAP ********************************/
 		  calculated_val = pot_1;
  8001a24:	4b16      	ldr	r3, [pc, #88]	; (8001a80 <StartcalcPos+0x74>)
  8001a26:	881a      	ldrh	r2, [r3, #0]
@@ -3598,12 +3598,12 @@ void StartcalcPos(void *argument)
 	  osDelay(25);
  8001a6c:	2019      	movs	r0, #25
  8001a6e:	f003 faa9 	bl	8004fc4 <osDelay>
-	  if(btn_state)
+	  if(btn_state)		//check if DRS button has been pushed
  8001a72:	e7cf      	b.n	8001a14 <StartcalcPos+0x8>
  8001a74:	2000002a 	.word	0x2000002a
  8001a78:	20000028 	.word	0x20000028
  8001a7c:	000006a4 	.word	0x000006a4
- 8001a80:	20001978 	.word	0x20001978
+ 8001a80:	20001974 	.word	0x20001974
  8001a84:	2000002c 	.word	0x2000002c
  8001a88:	cb295e9e 	.word	0xcb295e9e
  8001a8c:	3ff1c710 	.word	0x3ff1c710
@@ -3624,7 +3624,7 @@ void StartsetServo(void *argument)
   /* Infinite loop */
   for(;;)
   {
-	  setPWM(htim3, TIM_CHANNEL_1, 60000, servo_pos);	//3000 == 1ms, 20ms == 60000ms
+	  setPWM(htim3, TIM_CHANNEL_1, 60000, servo_pos);	//set the servo to the calculated position
  8001a9c:	4b0e      	ldr	r3, [pc, #56]	; (8001ad8 <StartsetServo+0x44>)
  8001a9e:	881b      	ldrh	r3, [r3, #0]
  8001aa0:	4c0e      	ldr	r4, [pc, #56]	; (8001adc <StartsetServo+0x48>)
@@ -3653,10 +3653,10 @@ void StartsetServo(void *argument)
 	  osDelay(20);
  8001ad0:	2014      	movs	r0, #20
  8001ad2:	f003 fa77 	bl	8004fc4 <osDelay>
-	  setPWM(htim3, TIM_CHANNEL_1, 60000, servo_pos);	//3000 == 1ms, 20ms == 60000ms
+	  setPWM(htim3, TIM_CHANNEL_1, 60000, servo_pos);	//set the servo to the calculated position
  8001ad6:	e7e1      	b.n	8001a9c <StartsetServo+0x8>
  8001ad8:	20000028 	.word	0x20000028
- 8001adc:	20001934 	.word	0x20001934
+ 8001adc:	20001930 	.word	0x20001930
  8001ae0:	0000ea60 	.word	0x0000ea60
 
 08001ae4 <StartgetBtn>:
@@ -3674,7 +3674,7 @@ void StartgetBtn(void *argument)
   /* Infinite loop */
   for(;;)
   {
-    if (!HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin)) 	//read the onboard btn
+    if (!HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin)) 	//read the onboard DRS button
  8001aec:	2380      	movs	r3, #128	; 0x80
  8001aee:	019b      	lsls	r3, r3, #6
  8001af0:	4a0f      	ldr	r2, [pc, #60]	; (8001b30 <StartgetBtn+0x4c>)
@@ -3713,7 +3713,7 @@ void StartgetBtn(void *argument)
     osDelay(10);
  8001b28:	200a      	movs	r0, #10
  8001b2a:	f003 fa4b 	bl	8004fc4 <osDelay>
-    if (!HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin)) 	//read the onboard btn
+    if (!HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin)) 	//read the onboard DRS button
  8001b2e:	e7dd      	b.n	8001aec <StartgetBtn+0x8>
  8001b30:	48000800 	.word	0x48000800
  8001b34:	2000002a 	.word	0x2000002a
@@ -3980,7 +3980,7 @@ void HAL_ADC_MspInit(ADC_HandleTypeDef* hadc)
  8001c86:	46c0      	nop			; (mov r8, r8)
  8001c88:	40012400 	.word	0x40012400
  8001c8c:	40021000 	.word	0x40021000
- 8001c90:	20001a04 	.word	0x20001a04
+ 8001c90:	20001a00 	.word	0x20001a00
  8001c94:	40020008 	.word	0x40020008
 
 08001c98 <HAL_TIM_PWM_MspInit>:
@@ -4349,7 +4349,7 @@ HAL_StatusTypeDef HAL_InitTick(uint32_t TickPriority)
  8001e8a:	46c0      	nop			; (mov r8, r8)
  8001e8c:	40021000 	.word	0x40021000
  8001e90:	000f4240 	.word	0x000f4240
- 8001e94:	20001a8c 	.word	0x20001a8c
+ 8001e94:	20001a88 	.word	0x20001a88
  8001e98:	40001000 	.word	0x40001000
  8001e9c:	000003e7 	.word	0x000003e7
 
@@ -4411,7 +4411,7 @@ void DMA1_Channel1_IRQHandler(void)
  8001ebe:	46bd      	mov	sp, r7
  8001ec0:	bd80      	pop	{r7, pc}
  8001ec2:	46c0      	nop			; (mov r8, r8)
- 8001ec4:	20001a04 	.word	0x20001a04
+ 8001ec4:	20001a00 	.word	0x20001a00
 
 08001ec8 <TIM6_DAC_IRQHandler>:
 
@@ -4437,7 +4437,7 @@ void TIM6_DAC_IRQHandler(void)
  8001ed6:	46bd      	mov	sp, r7
  8001ed8:	bd80      	pop	{r7, pc}
  8001eda:	46c0      	nop			; (mov r8, r8)
- 8001edc:	20001a8c 	.word	0x20001a8c
+ 8001edc:	20001a88 	.word	0x20001a88
 
 08001ee0 <SystemInit>:
   * @brief  Setup the microcontroller system.
@@ -4554,7 +4554,7 @@ LoopForever:
   ldr r2, =_sbss
  8001f34:	2000000c 	.word	0x2000000c
   ldr r4, =_ebss
- 8001f38:	20001b10 	.word	0x20001b10
+ 8001f38:	20001b0c 	.word	0x20001b0c
 
 08001f3c <ADC1_COMP_IRQHandler>:
  * @retval : None
@@ -4630,7 +4630,7 @@ __weak void HAL_IncTick(void)
  8001f80:	bd80      	pop	{r7, pc}
  8001f82:	46c0      	nop			; (mov r8, r8)
  8001f84:	20000004 	.word	0x20000004
- 8001f88:	20001acc 	.word	0x20001acc
+ 8001f88:	20001ac8 	.word	0x20001ac8
 
 08001f8c <HAL_GetTick>:
   * @note   This function is declared as __weak  to be overwritten  in case of other 
@@ -4649,7 +4649,7 @@ __weak uint32_t HAL_GetTick(void)
  8001f96:	46bd      	mov	sp, r7
  8001f98:	bd80      	pop	{r7, pc}
  8001f9a:	46c0      	nop			; (mov r8, r8)
- 8001f9c:	20001acc 	.word	0x20001acc
+ 8001f9c:	20001ac8 	.word	0x20001ac8
 
 08001fa0 <HAL_ADC_Init>:
   *         of structure "ADC_InitTypeDef".
@@ -15810,7 +15810,7 @@ BaseType_t xReturn;
  80059a6:	b004      	add	sp, #16
  80059a8:	bd80      	pop	{r7, pc}
  80059aa:	46c0      	nop			; (mov r8, r8)
- 80059ac:	20001ad0 	.word	0x20001ad0
+ 80059ac:	20001acc 	.word	0x20001acc
 
 080059b0 <vQueueWaitForMessageRestricted>:
 /*-----------------------------------------------------------*/

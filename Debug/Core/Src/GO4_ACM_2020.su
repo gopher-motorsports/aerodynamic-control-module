@@ -1,0 +1,4 @@
+GO4_ACM_2020.c:108:6:ACM_Init	8	static
+GO4_ACM_2020.c:122:6:fetch_data	24	static
+GO4_ACM_2020.c:169:6:calculate_wing_angle	8	static
+GO4_ACM_2020.c:173:6:arbitrate_speed	32	static
