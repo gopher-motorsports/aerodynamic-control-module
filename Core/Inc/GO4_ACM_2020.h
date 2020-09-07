@@ -20,6 +20,8 @@
 #define BRAKE_PRESSURE_COEFFICIENT 1.0
 #define THROTTLE_COEFFICIENT 1.0
 #define LINEAR_POSITION_TO_TICKS 34.72
+#define MINIMUM_ANGLE_IN_TICKS 1700
+#define TIMER_PERIOD 60000
 
 #define STEERING_INDEX_1_LOWER_BOUND -90
 #define STEERING_INDEX_1_UPPER_BOUND -72
@@ -150,8 +152,8 @@ typedef enum {
 } PARAMETER_STATE;
 
 typedef enum {
-	MANUAL = 1,
-	AUTO = 0,
+	MANUAL = 1,			// ACM only takes input from the driver
+	AUTO = 0,			// ACM only takes orders from itself
 } ACM_CONTROL_STATE;
 
 typedef struct {

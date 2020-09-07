@@ -233,45 +233,27 @@ void calculate_wing_angle(void) {
 		front_left_wing_map_position 	= *(*(*(front_left_wing_map + speed_index) + steering_angle_index) + acceleration_index);
 		front_right_wing_map_position 	= *(*(*(front_right_wing_map + speed_index) + steering_angle_index) + acceleration_index);
 		rear_wing_map_position 			= *(*(*(rear_wing_map + speed_index) + steering_angle_index) + acceleration_index);
-
-		// convert angle to timer count
-		temp_front_left_servo_ticks = LINEAR_POSITION_TO_TICKS * front_left_wing_map_position;
-		temp_front_right_servo_ticks = LINEAR_POSITION_TO_TICKS * front_right_wing_map_position;
-		temp_rear_servo_ticks = LINEAR_POSITION_TO_TICKS * rear_wing_map_position;
-
-		//convert angle to timer count
-		front_left_servo_ticks = (U16)temp_front_left_servo_ticks + 1700;
-		front_right_servo_ticks = (U16)temp_front_right_servo_ticks + 1700;
-		rear_servo_ticks = (U16)temp_rear_servo_ticks + 1700;
 	} else if(control_state == MANUAL && drs_button_state == 0) {
 		//Manual Mode
 		front_left_wing_map_position = FRONT_LEFT_WING_MANUAL_POSITION;
 		front_right_wing_map_position = FRONT_RIGHT_WING_MANUAL_POSITION;
 		rear_wing_map_position = REAR_WING_MANUAL_POSITION;
-
-		temp_front_left_servo_ticks = LINEAR_POSITION_TO_TICKS * front_left_wing_map_position;
-		temp_front_right_servo_ticks = LINEAR_POSITION_TO_TICKS * front_right_wing_map_position;
-		temp_rear_servo_ticks = LINEAR_POSITION_TO_TICKS * rear_wing_map_position;
-
-		//convert angle to timer count
-		front_left_servo_ticks = (U16)temp_front_left_servo_ticks + 1700;
-		front_right_servo_ticks = (U16)temp_front_right_servo_ticks + 1700;
-		rear_servo_ticks = (U16)temp_rear_servo_ticks + 1700;
 	} else {
 		// DRS ACTIVATED
 		front_left_wing_map_position = FRONT_LEFT_WING_DRS_POSITION;
 		front_right_wing_map_position = FRONT_RIGHT_WING_DRS_POSITION;
 		rear_wing_map_position = REAR_WING_DRS_POSITION;
-
-		temp_front_left_servo_ticks = LINEAR_POSITION_TO_TICKS * front_left_wing_map_position;
-		temp_front_right_servo_ticks = LINEAR_POSITION_TO_TICKS * front_right_wing_map_position;
-		temp_rear_servo_ticks = LINEAR_POSITION_TO_TICKS * rear_wing_map_position;
-
-		//convert angle to timer count
-		front_left_servo_ticks = (U16)temp_front_left_servo_ticks + 1700;
-		front_right_servo_ticks = (U16)temp_front_right_servo_ticks + 1700;
-		rear_servo_ticks = (U16)temp_rear_servo_ticks + 1700;
 	}
+
+	// convert angle to timer count
+	temp_front_left_servo_ticks = LINEAR_POSITION_TO_TICKS * front_left_wing_map_position;
+	temp_front_right_servo_ticks = LINEAR_POSITION_TO_TICKS * front_right_wing_map_position;
+	temp_rear_servo_ticks = LINEAR_POSITION_TO_TICKS * rear_wing_map_position;
+
+	//convert angle to timer count
+	front_left_servo_ticks = (U16)temp_front_left_servo_ticks + MINIMUM_ANGLE_IN_TICKS;
+	front_right_servo_ticks = (U16)temp_front_right_servo_ticks + MINIMUM_ANGLE_IN_TICKS;
+	rear_servo_ticks = (U16)temp_rear_servo_ticks + MINIMUM_ANGLE_IN_TICKS;
 }
 
 void arbitrate_acceleration(void) {
@@ -421,9 +403,9 @@ void arbitrate_steering_angle(void) {
 }
 
 void output_angles(void) {
-	setPWM(htim3, TIM_CHANNEL_1, 60000, front_left_servo_ticks);	// 3000 == 1ms, 20ms == 60000ms
-	setPWM(htim3, TIM_CHANNEL_2, 60000, front_right_servo_ticks);	// 3000 == 1ms, 20ms == 60000ms
-	setPWM(htim3, TIM_CHANNEL_3, 60000, rear_servo_ticks);			// 3000 == 1ms, 20ms == 60000ms
+	setPWM(htim3, TIM_CHANNEL_1, TIMER_PERIOD, front_left_servo_ticks);		// 3000 == 1ms, 20ms == 60000ms
+	setPWM(htim3, TIM_CHANNEL_2, TIMER_PERIOD, front_right_servo_ticks);	// 3000 == 1ms, 20ms == 60000ms
+	setPWM(htim3, TIM_CHANNEL_3, TIMER_PERIOD, rear_servo_ticks);			// 3000 == 1ms, 20ms == 60000ms
 }
 
 void setPWM(TIM_HandleTypeDef timer, uint32_t channel, uint16_t period,
