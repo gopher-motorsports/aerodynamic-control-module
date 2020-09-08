@@ -50,8 +50,8 @@ RTOS_DRS.bin \
 all: RTOS_DRS.elf secondary-outputs
 
 # Tool invocations
-RTOS_DRS.elf: $(OBJS) $(USER_OBJS) C:\Users\bents\STM32CubeIDE\workspace_1.4.0\RTOS_DRS\STM32F072RBTX_FLASH.ld
-	arm-none-eabi-gcc -o "RTOS_DRS.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m0 -T"C:\Users\bents\STM32CubeIDE\workspace_1.4.0\RTOS_DRS\STM32F072RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS_DRS.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+RTOS_DRS.elf: $(OBJS) $(USER_OBJS) C:\Users\bents\Documents\Github\ACM-Software-2021\STM32F072RBTX_FLASH.ld
+	arm-none-eabi-gcc -o "RTOS_DRS.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m0 -T"C:\Users\bents\Documents\Github\ACM-Software-2021\STM32F072RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS_DRS.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
