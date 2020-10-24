@@ -17,6 +17,7 @@
 // Project Includes
 #include "base_types.h"
 #include "GO4_ACM_2020.h"
+#include "GopherCAN.h"
 
 extern TIM_HandleTypeDef htim3;
 
@@ -108,6 +109,44 @@ U16 front_right_servo_ticks;
 U16 rear_servo_ticks;
 U8 drs_button_state;
 ACM_CONTROL_STATE control_state;	// the state of control (Either AUTO - controlled by the ACM or MANUAL - Driver controlled)
+U8 this_module = ACM_ID;
+
+/* CAN */
+
+extern CAN_COMMAND_STRUCT can_command;
+extern S16_CAN_STRUCT received_wheel_speed;
+extern S16_CAN_STRUCT received_air_speed;
+extern S16_CAN_STRUCT received_throttle_position;
+extern S16_CAN_STRUCT received_steering_angle;
+extern S16_CAN_STRUCT received_brake_pressure;
+extern S16_CAN_STRUCT received_acceleration;
+
+// the HAL_CAN struct
+CAN_HandleTypeDef* hcan;
+
+void init(CAN_HandleTypeDef* hcan_ptr)
+{
+	hcan = hcan_ptr;
+
+	// initialize CAN
+	// NOTE: CAN will also need to be added in CubeMX and code must be generated
+	// Check the STM_CAN repo for the file "F0xx CAN Config Settings.pptx" for the correct settings
+	if (init_can(hcan, this_module))
+	{
+		// an error has occurred
+	}
+
+	// enable updating the RPM and fan_current. Parameters that are not added to this list
+	// will not be updated over CAN, even if they are requested
+	received_wheel_speed.update_enabled = TRUE;
+	received_air_speed.update_enabled = TRUE;
+
+	// enable the tester variables
+	received_throttle_position.update_enabled = TRUE;
+	received_steering_angle.update_enabled = TRUE;
+	received_brake_pressure.update_enabled = TRUE;
+	received_acceleration.update_enabled = TRUE;
+}
 
 void ACM_Init(void) {
 
@@ -130,7 +169,7 @@ void fetch_data(void) {
 
 	for(global_parameter_list = parameters;global_parameter_list < global_parameter_list + NUM_PARAMETERS;global_parameter_list++) {
 		/******************************   CAN   ******************************/
-		// Try to Receive specific chunk of data over CAN
+		// Try to Receive specific chunk of data over CAN S16
 		// global_parameter_list->current_value = fetch_parameter_function(specific parameter);
 
 	}

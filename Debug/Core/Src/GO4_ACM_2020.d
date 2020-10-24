@@ -26,6 +26,7 @@ Core/Src/GO4_ACM_2020.o: ../Core/Src/GO4_ACM_2020.c \
  ../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_dma.h \
  ../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_dma_ex.h \
  ../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_cortex.h \
+ ../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_can.h \
  ../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_flash.h \
  ../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_flash_ex.h \
  ../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_i2c.h \
@@ -37,7 +38,7 @@ Core/Src/GO4_ACM_2020.o: ../Core/Src/GO4_ACM_2020.c \
  ../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_uart.h \
  ../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_uart_ex.h \
  ../Core/Inc/base_types.h ../Core/Inc/GO4_ACM_2020.h \
- ../Core/Inc/base_types.h
+ ../Core/Inc/base_types.h ../Core/Src/GopherCAN.h
 
 ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h:
 
@@ -95,6 +96,8 @@ Core/Src/GO4_ACM_2020.o: ../Core/Src/GO4_ACM_2020.c \
 
 ../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_cortex.h:
 
+../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_can.h:
+
 ../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_flash.h:
 
 ../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_flash_ex.h:
@@ -120,3 +123,5 @@ Core/Src/GO4_ACM_2020.o: ../Core/Src/GO4_ACM_2020.c \
 ../Core/Inc/GO4_ACM_2020.h:
 
 ../Core/Inc/base_types.h:
+
+../Core/Src/GopherCAN.h:

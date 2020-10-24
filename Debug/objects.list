@@ -1,4 +1,5 @@
 "Core/Src/GO4_ACM_2020.o"
+"Core/Src/GopherCAN.o"
 "Core/Src/freertos.o"
 "Core/Src/main.o"
 "Core/Src/stm32f0xx_hal_msp.o"
@@ -9,6 +10,7 @@
 "Core/Src/system_stm32f0xx.o"
 "Core/Startup/startup_stm32f072rbtx.o"
 "Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal.o"
+"Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_can.o"
 "Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_cortex.o"
 "Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_dma.o"
 "Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_exti.o"
