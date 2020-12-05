@@ -1,0 +1,14 @@
+include @gopher-motorsports/peripherals/STM32F0GPIOPort.cs
+
+mach create
+machine LoadPlatformDescription @platforms/cpus/stm32f072.repl
+machine LoadPlatformDescriptionFromString "button: Miscellaneous.Button @ gpioPortB 0 { IRQ -> gpioPortB@0 }"
+
+$bin?=@C:\Users\H-O-Cally\STM32CubeIDE\workspace_1.4.0\blink_test\Debug\blink_test.elf
+
+macro reset
+"""
+    sysbus LoadELF $bin
+"""
+
+runMacro $reset
