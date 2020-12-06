@@ -1,7 +1,7 @@
 using "platforms/cpus/stm32f072.repl"
 
 UserButton: Miscellaneous.Button @ gpioPortB 
-    -> gpioPortB@0
+    -> gpioPortB@1
 
 UserLED1: Miscellaneous.LED @ gpioPortA
 UserLED2: Miscellaneous.LED @ gpioPortA
