@@ -9,8 +9,7 @@ Resource                      ${RENODEKEYWORDS}
 Create Target
     Execute Command         include @peripherals/STM32F0GPIOPort.cs
     Execute Command         mach create
-    Execute Command         machine LoadPlatformDescription @platforms/cpus/stm32f072.repl
-    Execute Command         machine LoadPlatformDescriptionFromString "button: Miscellaneous.Button @ gpioPortB 0 { IRQ -> gpioPortB@0 }"
+    Execute Command         machine LoadPlatformDescription @platforms/boards/acm_pcba_v1.0.repl
     Execute Command         sysbus LoadELF @code/RTOS_DRS.elf
 
 *** Test Cases ***
@@ -22,7 +21,7 @@ Should Handle Button Press
     Start Emulation
 
     Execute Command         lt AssertState True 1
-    Execute Command         sysbus.gpioPortB.button Press
+    Execute Command         sysbus.gpioPortB.UserButton Press
     Execute Command         lt AssertState False 1
-    Execute Command         sysbus.gpioPortB.button Release
+    Execute Command         sysbus.gpioPortB.UserButton Release
     Execute Command         lt AssertState True 1

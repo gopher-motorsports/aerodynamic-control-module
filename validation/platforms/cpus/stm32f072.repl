@@ -69,15 +69,6 @@ gpioPortE: GPIOPort.STM32F0GPIOPort @ sysbus <0x48001000, +0x400>
 gpioPortF: GPIOPort.STM32F0GPIOPort @ sysbus <0x48001400, +0x400>
     [0-15] -> exti@[0-15]
 
-UserLED1: Miscellaneous.LED @ gpioPortA
-UserLED2: Miscellaneous.LED @ gpioPortA
-
-gpioPortA:
-    5 -> UserLED1@0
-    6 -> UserLED2@0
-
-
-
 sysbus:
     init:
         ApplySVD @platforms/svds/STM32F0x2.svd
