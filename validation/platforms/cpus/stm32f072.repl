@@ -64,19 +64,22 @@ gpioPortE: GPIOPort.STM32F0GPIOPort @ sysbus <0x48001000, +0x400>
 gpioPortF: GPIOPort.STM32F0GPIOPort @ sysbus <0x48001400, +0x400>
     [0-15] -> exti@[0-15]
 
-timer2: Timers.STM32_Timer @ sysbus <0x40000000, +0x400>
+timer2: Timers.STM32F0Timer3 @ sysbus <0x40000000, +0x400>
     frequency: 3000000
     initialLimit: 0xFFFF
 
-timer3: Timers.STM32_Timer @ sysbus <0x40000400, +0x400>
+timer3: Timers.STM32F0Timer3 @ sysbus <0x40000400, +0x400>
+    -> gpioPortA@5
     frequency: 3000000
     initialLimit: 0xFFFF
 
-timer6: Timers.STM32_Timer @ sysbus <0x40001000, +0x400>
+timer6: Timers.STM32F0Timer6 @ sysbus <0x40001000, +0x400>
     -> nvic@17
-    frequency: 2900000
+    frequency: 48000000
     initialLimit: 0xFFFF
 
+can0: CAN.STMCAN @ sysbus <0x40006400, +0x400>
+    [0-3] -> nvic@[19-22]
 
 sysbus:
     init:
