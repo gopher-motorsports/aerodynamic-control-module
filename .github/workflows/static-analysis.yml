@@ -4,7 +4,7 @@
 name: Static Analysis
 
 on:
-  push:
+  pull_request:
 
 jobs:
   analyze:

@@ -1,0 +1,21 @@
+name: Test
+
+on:
+  push:
+
+jobs:
+  analyze:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Print Debug Message
+      run: echo "::debug::Set the Octocat variable"
+
+    - name: Print Warning Message
+      run: echo "::warning file=app.js,line=1,col=5::Missing semicolon"
+
+    - name: Print Debug Message
+      run: echo "::error file=app.js,line=10,col=15::Something went wrong"
