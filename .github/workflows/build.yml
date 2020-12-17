@@ -10,7 +10,7 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
 
     steps:
     - uses: actions/checkout@v2
@@ -64,8 +64,8 @@ jobs:
       env:
         SLACK_CHANNEL: firmware-validation
         SLACK_COLOR: '#3278BD'
-        SLACK_ICON_EMOJI: robot_face
+        SLACK_ICON_EMOJI: airplane
         SLACK_FOOTER: Build passed. ${{ secrets.ARTIFACT_ROOT_URL }}/${{github.sha}}/test.html
         SLACK_TITLE: Commit Message
-        SLACK_USERNAME: validation-bot
+        SLACK_USERNAME: acm-validation-bot
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
