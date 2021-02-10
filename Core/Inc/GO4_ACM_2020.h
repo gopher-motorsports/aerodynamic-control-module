@@ -21,6 +21,30 @@
 #define MINIMUM_ANGLE_SERVO_TICKS 	1700	// Smallest angle the servo can go to, used to calculate timer ticks of servo PWM
 #define TIMER_PERIOD 				60000	// Period of the PWM timer
 
+//TRIMS
+#define FRONT_RIGHT_TRIM 0
+#define FRONT_LEFT_TRIM 0
+#define REAR_TRIM 0
+
+//DATA UPDATE TIMES
+#define RECEIVED_WHEEL_SPEED_UPDATE_TIME 		100
+#define RECEIVED_WHEEL_SPEED_TIMEOUT_TIME		100000
+
+#define RECEIVED_AIR_SPEED_UPDATE_TIME 			100
+#define RECEIVED_AIR_SPEED_TIMEOUT_TIME			100000
+
+#define RECEIVED_THROTTLE_POSITION_UPDATE_TIME 	100
+#define RECEIVED_THROTTLE_POSITION_TIMEOUT_TIME	100000
+
+#define RECEIVED_STEERING_ANGLE_UPDATE_TIME 	100
+#define RECEIVED_STEERING_ANGLE_TIMEOUT_TIME	100000
+
+#define RECEIVED_BRAKE_PRESSURE_UPDATE_TIME 	100
+#define RECEIVED_BRAKE_PRESSURE_TIMEOUT_TIME	100000
+
+#define RECEIVED_ACCELERATION_UPDATE_TIME 		100
+#define RECEIVED_ACCELERATION_TIMEOUT_TIME		100000
+
 //STEERING INDEX BOUNDS [degrees]
 #define STEERING_INDEX_1_THRESHOLD -90
 #define STEERING_INDEX_2_THRESHOLD -72
@@ -286,7 +310,8 @@ typedef struct {
 
 /***************************** Function Prototypes *****************************/
 void ACM_Init(void);											// Run at startup
-void fetch_data(void);											// Gets the data and does pre-calculations
+void fetch_data(void);											// Request Parameters via CAN
+void update_data(void);											// Does pre-calculations
 void calculate_wing_angle(void);								// Uses the filtered and "pre-calculated" to lookup position in 3d map
 void arbitrate_speed(void);										// Calculate what the speed value input to the map is
 void arbitrate_acceleration(void);								// Calculate what the acceleration value input to the map is

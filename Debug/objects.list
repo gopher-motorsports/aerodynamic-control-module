@@ -1,5 +1,6 @@
 "Core/Src/GO4_ACM_2020.o"
 "Core/Src/GopherCAN.o"
+"Core/Src/GopherCAN_ring_buffer.o"
 "Core/Src/freertos.o"
 "Core/Src/main.o"
 "Core/Src/stm32f0xx_hal_msp.o"

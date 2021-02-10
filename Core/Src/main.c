@@ -44,20 +44,14 @@
 CAN_HandleTypeDef hcan;
 
 TIM_HandleTypeDef htim3;
+TIM_HandleTypeDef htim14;
 
 UART_HandleTypeDef huart2;
 
-/* Definitions for collect_data */
-osThreadId_t collect_dataHandle;
-const osThreadAttr_t collect_data_attributes = {
-  .name = "collect_data",
-  .priority = (osPriority_t) osPriorityNormal,
-  .stack_size = 128 * 4
-};
-/* Definitions for calculate_wing_ */
-osThreadId_t calculate_wing_Handle;
-const osThreadAttr_t calculate_wing__attributes = {
-  .name = "calculate_wing_",
+/* Definitions for start_update_ca */
+osThreadId_t start_update_caHandle;
+const osThreadAttr_t start_update_ca_attributes = {
+  .name = "start_update_ca",
   .priority = (osPriority_t) osPriorityNormal,
   .stack_size = 128 * 4
 };
@@ -72,7 +66,14 @@ const osThreadAttr_t actuate_wings_attributes = {
 osThreadId_t DRS_buttonHandle;
 const osThreadAttr_t DRS_button_attributes = {
   .name = "DRS_button",
-  .priority = (osPriority_t) osPriorityAboveNormal,
+  .priority = (osPriority_t) osPriorityNormal,
+  .stack_size = 128 * 4
+};
+/* Definitions for start_fetch_dat */
+osThreadId_t start_fetch_datHandle;
+const osThreadAttr_t start_fetch_dat_attributes = {
+  .name = "start_fetch_dat",
+  .priority = (osPriority_t) osPriorityNormal,
   .stack_size = 128 * 4
 };
 /* USER CODE BEGIN PV */
@@ -85,10 +86,11 @@ static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
 static void MX_TIM3_Init(void);
 static void MX_CAN_Init(void);
-void start_collect_data(void *argument);
-void start_calculate_wing_angle(void *argument);
+static void MX_TIM14_Init(void);
+void start_update_calculate_wing_angle(void *argument);
 void start_actuate_wings(void *argument);
 void start_DRS_button(void *argument);
+void start_fetch_data(void *argument);
 
 /* USER CODE BEGIN PFP */
 
@@ -130,6 +132,7 @@ int main(void)
   MX_USART2_UART_Init();
   MX_TIM3_Init();
   MX_CAN_Init();
+  MX_TIM14_Init();
   /* USER CODE BEGIN 2 */
   /************** RUNNING CONFIG CALLS **************/
 
@@ -157,17 +160,17 @@ int main(void)
   /* USER CODE END RTOS_QUEUES */
 
   /* Create the thread(s) */
-  /* creation of collect_data */
-  collect_dataHandle = osThreadNew(start_collect_data, NULL, &collect_data_attributes);
-
-  /* creation of calculate_wing_ */
-  calculate_wing_Handle = osThreadNew(start_calculate_wing_angle, NULL, &calculate_wing__attributes);
+  /* creation of start_update_ca */
+  start_update_caHandle = osThreadNew(start_update_calculate_wing_angle, NULL, &start_update_ca_attributes);
 
   /* creation of actuate_wings */
   actuate_wingsHandle = osThreadNew(start_actuate_wings, NULL, &actuate_wings_attributes);
 
   /* creation of DRS_button */
   DRS_buttonHandle = osThreadNew(start_DRS_button, NULL, &DRS_button_attributes);
+
+  /* creation of start_fetch_dat */
+  start_fetch_datHandle = osThreadNew(start_fetch_data, NULL, &start_fetch_dat_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -323,6 +326,37 @@ static void MX_TIM3_Init(void)
 }
 
 /**
+  * @brief TIM14 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM14_Init(void)
+{
+
+  /* USER CODE BEGIN TIM14_Init 0 */
+
+  /* USER CODE END TIM14_Init 0 */
+
+  /* USER CODE BEGIN TIM14_Init 1 */
+
+  /* USER CODE END TIM14_Init 1 */
+  htim14.Instance = TIM14;
+  htim14.Init.Prescaler = 183;
+  htim14.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim14.Init.Period = 65535;
+  htim14.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim14.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim14) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM14_Init 2 */
+
+  /* USER CODE END TIM14_Init 2 */
+
+}
+
+/**
   * @brief USART2 Initialization Function
   * @param None
   * @retval None
@@ -394,43 +428,22 @@ static void MX_GPIO_Init(void)
 
 /* USER CODE END 4 */
 
-/* USER CODE BEGIN Header_start_collect_data */
+/* USER CODE BEGIN Header_start_update_calculate_wing_angle */
 /**
-  * @brief  Function implementing the collect_data thread.
+  * @brief  Function implementing the start_update_ca thread.
   * @param  argument: Not used
   * @retval None
   */
-/* USER CODE END Header_start_collect_data */
-void start_collect_data(void *argument)
+/* USER CODE END Header_start_update_calculate_wing_angle */
+void start_update_calculate_wing_angle(void *argument)
 {
   /* USER CODE BEGIN 5 */
   /* Infinite loop */
   for(;;)
   {
-	  //collect the data
-	  fetch_data();
+	  //update the data
+	  update_data();
 
-	  osDelay(1);
-  }
-  // In case something gets severely whacked
-    osThreadTerminate(NULL);
-
-  /* USER CODE END 5 */
-}
-
-/* USER CODE BEGIN Header_start_calculate_wing_angle */
-/**
-* @brief Function implementing the calculate_wing_ thread.
-* @param argument: Not used
-* @retval None
-*/
-/* USER CODE END Header_start_calculate_wing_angle */
-void start_calculate_wing_angle(void *argument)
-{
-  /* USER CODE BEGIN start_calculate_wing_angle */
-  /* Infinite loop */
-  for(;;)
-  {
 	  //Pick all of the necessary values that should be used for calculation
 	  arbitrate_acceleration();
 	  arbitrate_speed();
@@ -438,10 +451,12 @@ void start_calculate_wing_angle(void *argument)
 
 	  calculate_wing_angle();
 
-
 	  osDelay(1);
   }
-  /* USER CODE END start_calculate_wing_angle */
+  // In case something gets severely whacked
+    osThreadTerminate(NULL);
+
+  /* USER CODE END 5 */
 }
 
 /* USER CODE BEGIN Header_start_actuate_wings */
@@ -481,6 +496,27 @@ void start_DRS_button(void *argument)
 	  osDelay(1);
   }
   /* USER CODE END start_DRS_button */
+}
+
+/* USER CODE BEGIN Header_start_fetch_data */
+/**
+* @brief Function implementing the start_fetch_dat thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_start_fetch_data */
+void start_fetch_data(void *argument)
+{
+  /* USER CODE BEGIN start_fetch_data */
+  /* Infinite loop */
+  for(;;)
+  {
+	  // Send for all data without interfering with calculations
+	  fetch_data();
+
+	  osDelay(1);
+  }
+  /* USER CODE END start_fetch_data */
 }
 
 /**

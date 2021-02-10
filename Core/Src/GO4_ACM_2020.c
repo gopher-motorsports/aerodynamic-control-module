@@ -8,11 +8,13 @@
 /* TODO:
  * 1. Acceleration sign
  * 2. CAN
+ * 3. Time based Wake-Up
  */
 
 //SYSTEM INCLUDES
 #include "cmsis_os.h"
 #include "main.h"
+#include <math.h>
 
 // Project Includes
 #include "base_types.h"
@@ -108,6 +110,14 @@ U16 front_left_servo_ticks;
 U16 front_right_servo_ticks;
 U16 rear_servo_ticks;
 U8 drs_button_state;
+
+U32 last_wheel_speed_req = 0;
+U32 last_air_speed_req = 0;
+U32 last_throttle_position_req = 0;
+U32 last_steering_angle_req = 0;
+U32 last_brake_pressure_req = 0;
+U32 last_acceleration_req = 0;
+
 ACM_CONTROL_STATE control_state;	// the state of control (Either AUTO - controlled by the ACM or MANUAL - Driver controlled)
 U8 this_module = ACM_ID;
 
@@ -133,7 +143,8 @@ void init(CAN_HandleTypeDef* hcan_ptr)
 	// Check the STM_CAN repo for the file "F0xx CAN Config Settings.pptx" for the correct settings
 	if (init_can(hcan, this_module))
 	{
-		// an error has occurred
+		// an error has occurred, just... no
+		while(1);
 	}
 
 	// enable updating the RPM and fan_current. Parameters that are not added to this list
@@ -141,7 +152,7 @@ void init(CAN_HandleTypeDef* hcan_ptr)
 	received_wheel_speed.update_enabled = TRUE;
 	received_air_speed.update_enabled = TRUE;
 
-	// enable the tester variables
+	// enable the other variables
 	received_throttle_position.update_enabled = TRUE;
 	received_steering_angle.update_enabled = TRUE;
 	received_brake_pressure.update_enabled = TRUE;
@@ -158,21 +169,116 @@ void ACM_Init(void) {
 	parameters[4] = acceleration;
 	parameters[5] = steering_angle;
 
-	// Start Timers for CAN?
 	// Do the Wave
 }
 
 void fetch_data(void) {
-	ACM_parameter* global_parameter_list;	// List of all of the unsigned parameters
+
+	/******************** REQUEST WHEEL_SPEED ********************/
+	if((HAL_GetTick() - received_wheel_speed.last_rx) >= RECEIVED_WHEEL_SPEED_UPDATE_TIME)
+	{
+		// if a request has already been sent don't send another one.
+		if(received_wheel_speed.pending_response == FALSE ||
+			HAL_GetTick() - last_wheel_speed_req >= RECEIVED_WHEEL_SPEED_TIMEOUT_TIME)
+		{
+			// ERROR
+		}
+
+		// update the last time that a message was received
+		last_wheel_speed_req = received_wheel_speed.last_rx;
+	}
+
+	/******************** REQUEST AIR_SPEED ********************/
+	if((HAL_GetTick() - received_air_speed.last_rx) >= RECEIVED_AIR_SPEED_UPDATE_TIME)
+	{
+		// if a request has already been sent don't send another one.
+		if(received_air_speed.pending_response == FALSE ||
+			HAL_GetTick() - last_air_speed_req >= RECEIVED_AIR_SPEED_TIMEOUT_TIME)
+		{
+			// ERROR
+		}
+
+		// update the last time that a message was received
+		last_air_speed_req = received_air_speed.last_rx;
+	}
+
+	/******************** REQUEST THROTTLE_POSITION ********************/
+	if((HAL_GetTick() - received_throttle_position.last_rx) >= RECEIVED_THROTTLE_POSITION_UPDATE_TIME)
+	{
+		// if a request has already been sent don't send another one.
+		if(received_throttle_position.pending_response == FALSE ||
+			HAL_GetTick() - last_throttle_position_req >= RECEIVED_THROTTLE_POSITION_TIMEOUT_TIME)
+		{
+			// ERROR
+		}
+
+		// update the last time that a message was received
+		last_throttle_position_req = received_throttle_position.last_rx;
+	}
+
+	/******************** REQUEST BRAKE_PRESSURE ********************/
+	if((HAL_GetTick() - received_brake_pressure.last_rx) >= RECEIVED_BRAKE_PRESSURE_UPDATE_TIME)
+	{
+		// if a request has already been sent don't send another one.
+		if(received_brake_pressure.pending_response == FALSE ||
+			HAL_GetTick() - last_brake_pressure_req >= RECEIVED_BRAKE_PRESSURE_TIMEOUT_TIME)
+		{
+			// ERROR
+		}
+
+		// update the last time that a message was received
+		last_brake_pressure_req = received_brake_pressure.last_rx;
+	}
+
+	/******************** REQUEST STEERING_ANGLE ********************/
+	if((HAL_GetTick() - received_steering_angle.last_rx) >= RECEIVED_STEERING_ANGLE_UPDATE_TIME)
+	{
+		// if a request has already been sent don't send another one.
+		if(received_brake_pressure.pending_response == FALSE ||
+			HAL_GetTick() - last_steering_angle_req >= RECEIVED_STEERING_ANGLE_TIMEOUT_TIME)
+		{
+			// ERROR
+		}
+
+		// update the last time that a message was received
+		last_steering_angle_req = received_steering_angle.last_rx;
+	}
+
+	/******************** REQUEST STEERING_ANGLE ********************/
+	if((HAL_GetTick() - received_acceleration.last_rx) >= RECEIVED_ACCELERATION_UPDATE_TIME)
+	{
+		// if a request has already been sent don't send another one.
+		if(received_acceleration.pending_response == FALSE ||
+			HAL_GetTick() - last_acceleration_req >= RECEIVED_ACCELERATION_TIMEOUT_TIME)
+		{
+			// ERROR
+		}
+
+		// update the last time that a message was received
+		last_steering_angle_req = received_acceleration.last_rx;
+	}
+
+}
+
+void update_data(void) {
+	ACM_parameter* global_parameter_list;					// List of all of the unsigned parameters
 	U8 average_index;										// index of the next element added to the sum to find average
 	S16 average_aggregate;									// sum of the elements before the average_index
 
-	for(global_parameter_list = parameters;global_parameter_list < global_parameter_list + NUM_PARAMETERS;global_parameter_list++) {
-		/******************************   CAN   ******************************/
-		// Try to Receive specific chunk of data over CAN S16
-		// global_parameter_list->current_value = fetch_parameter_function(specific parameter);
-
-	}
+	// Put all new received CAN data into parameters.
+	// Absolutely awful, find a better way to do this.
+	global_parameter_list = parameters;
+	global_parameter_list->current_value = received_wheel_speed.data;
+	global_parameter_list++;
+	global_parameter_list->current_value = received_air_speed.data;
+	global_parameter_list++;
+	global_parameter_list->current_value = received_throttle_position.data;
+	global_parameter_list++;
+	global_parameter_list->current_value = received_steering_angle.data;
+	global_parameter_list++;
+	global_parameter_list->current_value = received_brake_pressure.data;
+	global_parameter_list++;
+	global_parameter_list->current_value = received_acceleration.data;
 
 	//***************************  update data  ***************************//
 	for(global_parameter_list = parameters;global_parameter_list < global_parameter_list + NUM_PARAMETERS;global_parameter_list++) {
@@ -238,9 +344,9 @@ void calculate_wing_angle(void) {
 	}
 
 	// start to converting angle to timer count
-	temp_front_left_servo_ticks = LINEAR_POSITION_TO_TICKS * front_left_wing_map_position;
-	temp_front_right_servo_ticks = LINEAR_POSITION_TO_TICKS * front_right_wing_map_position;
-	temp_rear_servo_ticks = LINEAR_POSITION_TO_TICKS * rear_wing_map_position;
+	temp_front_left_servo_ticks = LINEAR_POSITION_TO_TICKS * (front_left_wing_map_position + FRONT_RIGHT_TRIM);
+	temp_front_right_servo_ticks = LINEAR_POSITION_TO_TICKS * (front_right_wing_map_position + FRONT_LEFT_TRIM);
+	temp_rear_servo_ticks = LINEAR_POSITION_TO_TICKS * (rear_wing_map_position + REAR_TRIM);
 
 	// Finish converting angle to timer count
 	front_left_servo_ticks = (U16)temp_front_left_servo_ticks + 1700;
